@@ -1,0 +1,5 @@
+CXX = g++
+CXX_STD = -std=c++11
+PKG_CXXFLAGS += -O3 src/sptree.cpp src/tsne.cpp src/nbodyfft.cpp -o bin/fast_tsne -pthread -lfftw3 -lm
+PKG_LIBS += -pthread -lfftw3 -lm
+CXXFLAGS += -O3 src/sptree.cpp src/tsne.cpp src/nbodyfft.cpp -o bin/fast_tsne -pthread -lfftw3 -lm

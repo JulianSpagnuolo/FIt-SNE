@@ -7,9 +7,8 @@ Author: c(person("George","Linderman","C.", role = c("aut")),person("Manas","Rac
     person("Jeremy","Hoskins","G.", role = c("aut")),person("Stefan","Steinerberger", role = c("aut")),
     person("Yuval","Kluger", role = c("aut")),person("Julian","Spagnuolo", role = c("com","cre")))
 URL: https://github.com/JulianSpagnuolo/FIt-SNE
-SystemRequirements: C++11
 Depends: 
-Imports: 
+Imports:
     heatmaply,
     pdist,
     plyr,
@@ -23,5 +22,7 @@ Description: t-Stochastic Neighborhood Embedding (t-SNE) is a highly successful 
     Early exaggeration: In Linderman and Steinerberger (2017), we showed that appropriately choosing the early exaggeration coefficient can lead to improved embedding of swissrolls and other synthetic datasets.
     Late exaggeration: Increasing the exaggeration coefficient late in the optimization process (e.g. after 800 of 1000 iterations) can improve separation of the clusters.
 License: 
+OS_type: unix
+SystemRequirements: C++11
 NeedsCompilation: yes
 RoxygenNote: 6.0.1
