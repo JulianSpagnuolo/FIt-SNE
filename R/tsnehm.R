@@ -1,7 +1,6 @@
-#' Compute t-SNE Heatmap
-#'
-#' Experimental version of t-SNE heatmaps codes
-#'
+#' @export
+#' @title tSNE Heatmap
+#' @description Computes t-SNE Heatmap (EXPERIMENTAL)
 #' @param expression_matrix Full expression matrix genes (rows) vs. cells (columns). Rownames should be gene names
 #' @param goi goi Genes of Interest
 #' @param tsne_embedding 1D t-SNE embedding
@@ -10,12 +9,17 @@
 #'                    and they can be mapped to a corresponding location on the 2D t-SNE
 #' @param enrich For every gene in goi, find enrich number of genes that are close to that gene in the distance induced by the 1D t-SNE
 #' @param breaks Number of bins
-require(gplots)
-library(pdist)
-library(plyr)
-library(RColorBrewer)
-library(heatmaply)
-
+#' import gplots might not be required
+#' @import pdist
+#' @import plyr
+#' @importFrom RColorBrewer brewer.pal
+#' @import heatmaply
+#'
+#require(gplots)
+#library(pdist)
+#library(plyr)
+#library(RColorBrewer)
+#library(heatmaply)
 tsnehm <- function(expression_matrix, goi, tsne_embedding, cell_labels, enrich=0, breaks=100){
   
   nonempty_cells <- colSums(expression_matrix) > 0;
@@ -36,7 +40,7 @@ tsnehm <- function(expression_matrix, goi, tsne_embedding, cell_labels, enrich=0
   }else{
     goidf <- data.frame(x=tsne_embedding, t(expression_matrix))
   }
-  group <- split (goidf, cut(goidf$x,breaks = breaks))
+  group <- split(goidf, cut(goidf$x,breaks = breaks))
   bin_counts <- ldply(lapply(group,function(x) t(as.data.frame(colSums((x[,-1]))))), data.frame)
   bin_counts_s  <- sweep(bin_counts[,-1],2,colSums(bin_counts[,-1]), '/')
   if (enrich >0 ) {
@@ -50,12 +54,12 @@ tsnehm <- function(expression_matrix, goi, tsne_embedding, cell_labels, enrich=0
   
   #assign a label to each column based on which of the cell_labels is the most common
   dbscan_tsne <- data.frame(x=tsne_embedding, y=cell_labels)
-  dbscan_group <- split (dbscan_tsne, cut(dbscan_tsne$x,breaks = breaks))
+  dbscan_group <- split(dbscan_tsne, cut(dbscan_tsne$x,breaks = breaks))
   Mode <- function(x) {
     ux <- unique(x)
     ux[which.max(tabulate(match(x, ux)))]
   }
-  group_labels <-unlist(lapply(dbscan_group, function(x) Mode(x[,2])))
+  group_labels <- unlist(lapply(dbscan_group, function(x) Mode(x[,2])))
   rownames(bin_counts_s) <- sprintf("bin:%s, label: %d", rownames(bin_counts_s), group_labels)
   group_labels[is.na(group_labels)] <- NA
   if (enrich>0){
@@ -65,14 +69,15 @@ tsnehm <- function(expression_matrix, goi, tsne_embedding, cell_labels, enrich=0
   }
   gene_colors[1:length(goi)] <- 1
   
-  my_palette <- colorRampPalette(c("white", "red"))(n = 1000)
-  row_color_palette <- colorRampPalette(c("white", "blue"))
-  col_color_palette <- colorRampPalette(brewer.pal(n = max(group_labels+1,na.rm=TRUE),"Spectral"))
+  my_palette <- colorRampPalette(c("white", "red"))(n = 1000) ## convert to colorblind friendly col pal JS
+  row_color_palette <- colorRampPalette(c("white", "blue")) ## convert to colorblind friendly col pal JS
+  col_color_palette <- colorRampPalette(brewer.pal(n = max(group_labels+1,na.rm=TRUE),"Spectral")) ## convert to colorblind friendly col pal JS
   #toplot <- t(as.matrix(bin_counts_s>0.05,2) + 0)
   toplot <- t(as.matrix(bin_counts_s,2))
+  
+  ## Maybe covert this to a pheatmap call.... JS
   heatmaply(toplot,col_side_colors = group_labels, row_side_colors=gene_colors, 
             row_side_palette=row_color_palette, showticklabels = c(FALSE,TRUE),  
                   col=my_palette,  dendrogram='row', titleX =FALSE, RowV=FALSE,
-                 show_legend=FALSE,hide_colorbar = TRUE,fontsize_row = 5,margins = c(70,50,NA,0),
-            )
+                 show_legend=FALSE,hide_colorbar = TRUE,fontsize_row = 5,margins = c(70,50,NA,0))
 }

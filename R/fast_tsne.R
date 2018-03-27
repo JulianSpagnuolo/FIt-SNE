@@ -1,4 +1,3 @@
-
 fftRtsne <- function(X, 
 		     dims=2, perplexity=30, theta=0.5,
 		     check_duplicates=TRUE,
@@ -11,8 +10,16 @@ fftRtsne <- function(X,
 		     n_trees=50, search_k = -1,rand_seed=-1,
 		     nterms=3, intervals_per_integer=1, min_num_intervals=50, 
 		     data_path=NULL, result_path=NULL,
-		     fast_tsne_path='bin/fast_tsne', nthreads=0, ...) {
-	if (is.null(data_path)) {
+		     fast_tsne_path='bin/fast_tsne', nthreads=0, ...)
+{
+  #' @export
+  #' @title ffRtsne
+  #' 
+  #' 
+  #' 
+  #' 
+	
+  if (is.null(data_path)) {
 		data_path <- tempfile(pattern='fftRtsne_data_', fileext='.dat')
 	}
 	if (is.null(result_path)) {
@@ -30,7 +37,14 @@ fftRtsne <- function(X,
 
 	if (!is.numeric(theta) || (theta<0.0) || (theta>1.0) ) { stop("Incorrect theta.")}
 	if (nrow(X) - 1 < 3 * perplexity) { stop("Perplexity is too large.")}
-	if (!is.matrix(X)) { stop("Input X is not a matrix")}
+	if (!is.matrix(X)) ## changed to convert to matrix if it is a dataframe, added verbosity if you tried to give it something else. JS
+	  { 
+	    if(is.data.frame(X))
+	    {
+	      X <- as.matrix(X)
+	    }
+	    else(stop("Not a data.frame or matrix"))
+	  } 
 	if (!(max_iter>0)) { stop("Incorrect number of iterations.")}
 	if (!is.wholenumber(stop_lying_iter) || stop_lying_iter<0) { stop("stop_lying_iter should be a positive integer")}
 	if (!is.numeric(exaggeration_factor)) { stop("exaggeration_factor should be numeric")}
