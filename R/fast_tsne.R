@@ -15,6 +15,7 @@ fftRtsne <- function(X,
   #' @export
   #' @title ffRtsne
   #' @author George Linderman, Cristoph H, Julian Spagnuolo
+  #' @description Wrapper for fast_tsne binary, can perform both Barnes Hutt tSNE or the fast Fourier transform implementation.
   #' @param X numeric matrix or dataframe containing data to be tsne-fied
   #' @param dims integer. number of output dimensions to reduce to. Default is 2.
   #' @param perplexity integer. Default is 30.
@@ -59,6 +60,8 @@ fftRtsne <- function(X,
   #' 
   #' @examples 
   #' # import the iris data set and remove any duplicates 
+  #' library(ggplot2)
+  #' library(ggthemes)
   #' data(iris)
   #' 
   #' u.iris <- unique(iris)
