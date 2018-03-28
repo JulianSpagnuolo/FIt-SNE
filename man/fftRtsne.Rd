@@ -11,7 +11,7 @@ fftRtsne(X, dims = 2, perplexity = 30, theta = 0.5,
   late_exag_coeff = 1, n_trees = 50, search_k = -1, rand_seed = -1,
   nterms = 3, intervals_per_integer = 1, min_num_intervals = 50,
   data_path = NULL, result_path = NULL, fast_tsne_path = NULL,
-  nthreads = NULL, ...)
+  nthreads = NULL)
 }
 \arguments{
 \item{X}{numeric matrix or dataframe containing data to be tsne-fied}
@@ -21,6 +21,8 @@ fftRtsne(X, dims = 2, perplexity = 30, theta = 0.5,
 \item{perplexity}{integer. Default is 30.}
 
 \item{theta}{numeric. Set to 0 for exact.  If non-zero, then will use either Barnes Hut or FIt-SNE based on fft_not_bh. If Barnes Hut is used, then this determines the accuracy of BH approximation. Default is 0.5}
+
+\item{check_duplicates}{logical. Whether to check X for duplicates. Only set to FALSE if you are absolutely sure your data contains no duplicate entries. Default is TRUE.}
 
 \item{max_iter}{integer. Maximum iterations to run tsne over the data.}
 
@@ -43,6 +45,8 @@ fftRtsne(X, dims = 2, perplexity = 30, theta = 0.5,
 \item{search_k}{numeric. Default is -1.}
 
 \item{rand_seed}{numeric. Set a seed number for reproducibility, if -1 the random seed will be set using the system time. Default is -1.}
+
+\item{nterms}{integer. The number of interpolation points per sub-interval when using FIt-SNE Default is 3.}
 
 \item{intervals_per_integer}{integer. See Details, must be >0. Default is 1}
 
@@ -83,7 +87,7 @@ u.iris <- unique(iris)
 
 # For a standard BH-tsne
 
-bh <- fftRtsne(X=u.iris[,1:4], dims = 2, fft_not_bh = F, max_iter = 1000, rand_seed=42)
+bh <- fftRtsne(X=u.iris[,1:4], dims = 2, fft_not_bh = FALSE, max_iter = 1000, rand_seed=42)
 u.iris$bh.tsne1 <- bh[,1]
 u.iris$bh.tsne2 <- bh[,2]
 
@@ -91,7 +95,7 @@ ggplot(u.iris, aes(x=bh.tsne1, y=bh.tsne2, colour=Species)) +geom_point() +scale
 
 # For the fast Fourier transform tSNE
 
-ff <- fftRtsne(X=u.iris[,1:4], dims=2, fft_not_bh=T, max_iter=1000, rand_seed=42)
+ff <- fftRtsne(X=u.iris[,1:4], dims=2, fft_not_bh=TRUE, max_iter=1000, rand_seed=42)
 u.iris$ff.tsne1 <- ff[,1]
 u.iris$ff.tsne2 <- ff[,2]
 

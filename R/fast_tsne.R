@@ -10,7 +10,7 @@ fftRtsne <- function(X,
 		     n_trees=50, search_k = -1,rand_seed=-1,
 		     nterms=3, intervals_per_integer=1, min_num_intervals=50, 
 		     data_path=NULL, result_path=NULL,
-		     fast_tsne_path=NULL, nthreads=NULL, ...)
+		     fast_tsne_path=NULL, nthreads=NULL)
 {
   #' @export
   #' @title ffRtsne
@@ -19,6 +19,7 @@ fftRtsne <- function(X,
   #' @param dims integer. number of output dimensions to reduce to. Default is 2.
   #' @param perplexity integer. Default is 30.
   #' @param theta numeric. Set to 0 for exact.  If non-zero, then will use either Barnes Hut or FIt-SNE based on fft_not_bh. If Barnes Hut is used, then this determines the accuracy of BH approximation. Default is 0.5
+  #' @param check_duplicates logical. Whether to check X for duplicates. Only set to FALSE if you are absolutely sure your data contains no duplicate entries. Default is TRUE.
   #' @param max_iter integer. Maximum iterations to run tsne over the data.
   #' @param fft_not_bh logical. Whether to run the Fast Fourier Transform tSNE (TRUE), or if set to FALSE, will use the BH implementation (slower). Default is TRUE.
   #' @param ann_not_vptree logical. If TRUE will approximate nearest neighbors using [Annoy](https://github.com/spotify/annoy), if FALSE the original BH-tSNE method using vantage-point trees will be used. Use vantage-point trees if fine detail is required (which is also multi-threaded in this implementation, so also quite fast if dimension <100). Default is TRUE
@@ -30,6 +31,7 @@ fftRtsne <- function(X,
   #' @param n_trees integer. Default is 50
   #' @param search_k numeric. Default is -1.
   #' @param rand_seed numeric. Set a seed number for reproducibility, if -1 the random seed will be set using the system time. Default is -1.
+  #' @param nterms integer. The number of interpolation points per sub-interval when using FIt-SNE Default is 3.
   #' @param intervals_per_integer integer. See Details, must be >0. Default is 1
   #' @param min_num_intervals integer. See Details. Default is 50
   #' @param data_path character. File path of a data file. If NULL, X will be written to a temp file. Default is NULL
@@ -63,7 +65,7 @@ fftRtsne <- function(X,
   #' 
   #' # For a standard BH-tsne
   #' 
-  #' bh <- fftRtsne(X=u.iris[,1:4], dims = 2, fft_not_bh = F, max_iter = 1000, rand_seed=42)
+  #' bh <- fftRtsne(X=u.iris[,1:4], dims = 2, fft_not_bh = FALSE, max_iter = 1000, rand_seed=42)
   #' u.iris$bh.tsne1 <- bh[,1]
   #' u.iris$bh.tsne2 <- bh[,2]
   #' 
@@ -71,7 +73,7 @@ fftRtsne <- function(X,
   #' 
   #' # For the fast Fourier transform tSNE
   #' 
-  #' ff <- fftRtsne(X=u.iris[,1:4], dims=2, fft_not_bh=T, max_iter=1000, rand_seed=42)
+  #' ff <- fftRtsne(X=u.iris[,1:4], dims=2, fft_not_bh=TRUE, max_iter=1000, rand_seed=42)
   #' u.iris$ff.tsne1 <- ff[,1]
   #' u.iris$ff.tsne2 <- ff[,2]
   #' 
