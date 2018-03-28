@@ -63,6 +63,9 @@ fftRtsne(X, dims = 2, perplexity = 30, theta = 0.5,
 \value{
 Matrix of the reduced tSNE dimensions, ncol = dims, nrow = nrow(X).
 }
+\description{
+Wrapper for fast_tsne binary, can perform both Barnes Hutt tSNE or the fast Fourier transform implementation.
+}
 \details{
 ann_not_vptree
  Using "near" neighbors as opposed to strictly "nearest" neighbors is faster, but also has a smoothing effect,
@@ -81,6 +84,8 @@ Let:
 }
 \examples{
 # import the iris data set and remove any duplicates 
+library(ggplot2)
+library(ggthemes)
 data(iris)
 
 u.iris <- unique(iris)
