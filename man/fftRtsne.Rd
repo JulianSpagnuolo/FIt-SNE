@@ -10,6 +10,45 @@ fftRtsne(X, dims = 2, perplexity = 30, theta = 0.5,
   no_momentum_during_exag = FALSE, start_late_exag_iter = -1,
   late_exag_coeff = 1, n_trees = 50, search_k = -1, rand_seed = -1,
   nterms = 3, intervals_per_integer = 1, min_num_intervals = 50,
-  data_path = NULL, result_path = NULL, fast_tsne_path = "bin/fast_tsne",
-  nthreads = 0, ...)
+  data_path = NULL, result_path = NULL, fast_tsne_path = NULL,
+  nthreads = NULL, ...)
+}
+\arguments{
+\item{X}{numeric matrix or dataframe containing data to be tsne-fied}
+
+\item{dims}{integer. number of output dimensions to reduce to. Default is 2.}
+
+\item{perplexity}{integer. Default is 30.}
+
+\item{theta}{numeric. Default is 0.5}
+
+\item{max_iter}{integer. Maximum iterations to run tsne over the data.}
+
+\item{fft_not_bh}{logical. Whether to run the Fast Fourier Transform tSNE (TRUE), or if set to FALSE, will use the BH implementation (slower). Default is TRUE.}
+
+\item{ann_not_vptree}{logical. Default is TRUE.}
+
+\item{stop_lying_iter}{integer. Default is 250.}
+
+\item{exaggeration_factor}{numeric. Default is 12.0}
+
+\item{no_momentum_during_exag}{logical. Default is FALSE.}
+
+\item{start_late_exag_iter}{numeric. Default is -1.0}
+
+\item{late_exag_coeff}{numeric. Default is 1.0}
+
+\item{n_trees}{integer. Default is 50}
+
+\item{intervals_per_integer}{integer. Default is 1}
+
+\item{min_num_intervals}{integer. Default is 50}
+
+\item{data_path}{character. Default is NULL}
+
+\item{result_path}{character. Default is NULL}
+
+\item{fast_tsne_path}{character. File path to the location of the compiled fast_tsne_binary. This version of the forked git repo will compile the fast_tsne binary to the package installation directory, if this param is NULL then the function will default to this location. You can change this behaviour if you have a custom install of the original repo. Default is NULL}
+
+\item{nthreads}{integer. Number of threads to use in the FF-tSNE, if NULL, will use detectCores()-1 to determine the number of threads to use.}
 }

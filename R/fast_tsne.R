@@ -10,14 +10,31 @@ fftRtsne <- function(X,
 		     n_trees=50, search_k = -1,rand_seed=-1,
 		     nterms=3, intervals_per_integer=1, min_num_intervals=50, 
 		     data_path=NULL, result_path=NULL,
-		     fast_tsne_path='bin/fast_tsne', nthreads=0, ...)
+		     fast_tsne_path=NULL, nthreads=NULL, ...)
 {
   #' @export
   #' @title ffRtsne
+  #' @param X numeric matrix or dataframe containing data to be tsne-fied
+  #' @param dims integer. number of output dimensions to reduce to. Default is 2.
+  #' @param perplexity integer. Default is 30.
+  #' @param theta numeric. Default is 0.5
+  #' @param max_iter integer. Maximum iterations to run tsne over the data.
+  #' @param fft_not_bh logical. Whether to run the Fast Fourier Transform tSNE (TRUE), or if set to FALSE, will use the BH implementation (slower). Default is TRUE.
+  #' @param ann_not_vptree logical. Default is TRUE.
+  #' @param stop_lying_iter integer. Default is 250.
+  #' @param exaggeration_factor numeric. Default is 12.0
+  #' @param no_momentum_during_exag logical. Default is FALSE.
+  #' @param start_late_exag_iter numeric. Default is -1.0
+  #' @param late_exag_coeff numeric. Default is 1.0
+  #' @param n_trees integer. Default is 50
+  #' @param intervals_per_integer integer. Default is 1
+  #' @param min_num_intervals integer. Default is 50
+  #' @param data_path character. Default is NULL
+  #' @param result_path character. Default is NULL
+  #' @param fast_tsne_path character. File path to the location of the compiled fast_tsne_binary. This version of the forked git repo will compile the fast_tsne binary to the package installation directory, if this param is NULL then the function will default to this location. You can change this behaviour if you have a custom install of the original repo. Default is NULL
+  #' @param nthreads integer. Number of threads to use in the FF-tSNE, if NULL, will use detectCores()-1 to determine the number of threads to use.
   #' 
-  #' 
-  #' 
-  #' 
+  #' @importFrom parallel detectCores
 	
   if (is.null(data_path)) {
 		data_path <- tempfile(pattern='fftRtsne_data_', fileext='.dat')
@@ -28,11 +45,20 @@ fftRtsne <- function(X,
 	if (is.null(fast_tsne_path)) {
 		fast_tsne_path <- system2('which', 'fast_tsne', stdout=TRUE)
 	}
+  if(is.null(fast_tsne_path)) ### Added in to default to R package install location. JS.
+  {
+    fast_tsne_path <- paste(normalizePath(find.package("fftRtsne")), "fast_tsne", sep="/")
+  }
 	fast_tsne_path <- normalizePath(fast_tsne_path)
 	if (!file_test('-x', fast_tsne_path)) {
 		stop(fast_tsne_path, " does not exist or is not executable; check your fast_tsne_path parameter")
 	}
 
+	if(is.null(nthreads)) ## added in to make maximal use of detected cores, minus one for safety :) JS
+	{
+	  nthreads <- detectCores()-1
+	}
+	
 	is.wholenumber <- function(x, tol = .Machine$double.eps^0.5)  abs(x - round(x)) < tol
 
 	if (!is.numeric(theta) || (theta<0.0) || (theta>1.0) ) { stop("Incorrect theta.")}
