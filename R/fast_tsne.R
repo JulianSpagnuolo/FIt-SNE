@@ -72,7 +72,8 @@ fftRtsne <- function(X,
   #' u.iris$bh.tsne1 <- bh[,1]
   #' u.iris$bh.tsne2 <- bh[,2]
   #' 
-  #' ggplot(u.iris, aes(x=bh.tsne1, y=bh.tsne2, colour=Species)) +geom_point() +scale_color_colorblind() +theme_bw() +theme(aspect.ratio=1)
+  #' fig <- ggplot(u.iris, aes(x=bh.tsne1, y=bh.tsne2, colour=Species))
+  #' fig +geom_point() +scale_color_colorblind() +theme_bw() +theme(aspect.ratio=1)
   #' 
   #' # For the fast Fourier transform tSNE
   #' 
@@ -80,7 +81,8 @@ fftRtsne <- function(X,
   #' u.iris$ff.tsne1 <- ff[,1]
   #' u.iris$ff.tsne2 <- ff[,2]
   #' 
-  #' ggplot(u.iris, aes(x=ff.tsne1, y=ff.tsne2, colour=Species)) +geom_point() +scale_color_colorblind() +theme_bw() +theme(aspect.ratio=1)
+  #' fig <- ggplot(u.iris, aes(x=ff.tsne1, y=ff.tsne2, colour=Species))
+  #' fig +geom_point() +scale_color_colorblind() +theme_bw() +theme(aspect.ratio=1)
   #' 
   #' @importFrom parallel detectCores
 	
