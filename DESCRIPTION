@@ -20,13 +20,8 @@ Authors@R: c(person("George C.","Linderman", role = c("aut"), comment="Author of
 URL: https://github.com/JulianSpagnuolo/FIt-SNE
 Depends: 
 Imports:
-    heatmaply,
-    parallel,
-    pdist,
-    plyr,
-    RColorBrewer
+    parallel
 Suggests:
-    dbscan,
     ggplot2,
     ggthemes
 Maintainer: Julian Spagnuolo <julian.spagnuolo@unibas.ch>

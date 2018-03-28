@@ -21,7 +21,7 @@ fftRtsne <- function(X,
   #' @param theta numeric. Set to 0 for exact.  If non-zero, then will use either Barnes Hut or FIt-SNE based on fft_not_bh. If Barnes Hut is used, then this determines the accuracy of BH approximation. Default is 0.5
   #' @param max_iter integer. Maximum iterations to run tsne over the data.
   #' @param fft_not_bh logical. Whether to run the Fast Fourier Transform tSNE (TRUE), or if set to FALSE, will use the BH implementation (slower). Default is TRUE.
-  #' @param ann_not_vptree logical. If TRUE will approximate nearest neighbors using [Annoy](https://github.com/spotify/annoy), if FALSE the original BH-tSNE method using vantage-point trees will be used. Default is TRUE.
+  #' @param ann_not_vptree logical. If TRUE will approximate nearest neighbors using [Annoy](https://github.com/spotify/annoy), if FALSE the original BH-tSNE method using vantage-point trees will be used. Use vantage-point trees if fine detail is required (which is also multi-threaded in this implementation, so also quite fast if dimension <100). Default is TRUE
   #' @param stop_lying_iter integer. Determines the iteration at which early exageration is switch off. Default is 250.
   #' @param exaggeration_factor numeric. Early exageration coefficient, altering can lead to improved embedding of swissrolls and other synthetic datasets. Default is 12.0
   #' @param no_momentum_during_exag logical. If FALSE, momentum and other optimizations will be used in the gradient decent phase. If TRUE, standard gradient descent will be used. Useful for testing large exaggeration coefficients. Default is FALSE.

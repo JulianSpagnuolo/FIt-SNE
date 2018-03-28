@@ -26,7 +26,7 @@ fftRtsne(X, dims = 2, perplexity = 30, theta = 0.5,
 
 \item{fft_not_bh}{logical. Whether to run the Fast Fourier Transform tSNE (TRUE), or if set to FALSE, will use the BH implementation (slower). Default is TRUE.}
 
-\item{ann_not_vptree}{logical. If TRUE will approximate nearest neighbors using [Annoy](https://github.com/spotify/annoy), if FALSE the original BH-tSNE method using vantage-point trees will be used. Default is TRUE.}
+\item{ann_not_vptree}{logical. If TRUE will approximate nearest neighbors using [Annoy](https://github.com/spotify/annoy), if FALSE the original BH-tSNE method using vantage-point trees will be used. Use vantage-point trees if fine detail is required (which is also multi-threaded in this implementation, so also quite fast if dimension <100). Default is TRUE}
 
 \item{stop_lying_iter}{integer. Determines the iteration at which early exageration is switch off. Default is 250.}
 
