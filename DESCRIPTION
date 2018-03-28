@@ -3,9 +3,20 @@ Type: Package
 Title: FFT-accelerated Interpolation-based tSNE (FIt-SNE)
 Version: 0.1.0
 Date: 2018-03-27
-Author: c(person("George","Linderman","C.", role = c("aut")),person("Manas","Rachh",role = c("aut")),
-    person("Jeremy","Hoskins","G.", role = c("aut")),person("Stefan","Steinerberger", role = c("aut")),
-    person("Yuval","Kluger", role = c("aut")),person("Julian","Spagnuolo", role = c("com","cre")))
+Description: An R wrapper around a fast Fourier transform-accelerated interpolation-based t-SNE (FIt-SNE),
+    which dramatically accelerates the computation of t-SNE. The most time-consuming step of t-SNE is a convolution
+    that is here, accelerated by interpolating onto an equispaced grid and subsequently using the fast Fourier transform
+    to perform the convolution. The computation of input similarities in high dimensions is also optimised using multi-threaded
+    approximate nearest neighbors. A further modification to t-SNE called "late exaggeration", allows for easier identification
+    of clusters in t-SNE embeddings. See Linderman GC., Rachh M., et al (2017) <arXiv:1712.09005>
+Citation: <arXiv:1712.09005>
+Authors@R: c(person("George C.","Linderman", role = c("aut"), comment="Author of original FI-tsne code"),
+            person("Manas","Rachh",role = c("aut"), comment="Author of original FI-tsne code"),
+            person("Jeremy G.","Hoskins", role = c("aut"), comment="Author of original FI-tsne code"),
+            person("Stefan","Steinerberger", role = c("aut"), comment="Author of original FI-tsne code"),
+            person("Yuval","Kluger", role = c("aut"), comment="Author of original FI-tsne code"),
+            person("Julian","Spagnuolo", role = c("com","cre"), email="julian.spagnuolo@unibas.ch", comment="R package author"),
+            person("Laurens", "van der Maaten", role = c("cph"), comment="Author of original tSNE code"))
 URL: https://github.com/JulianSpagnuolo/FIt-SNE
 Depends: 
 Imports:
@@ -15,14 +26,12 @@ Imports:
     plyr,
     RColorBrewer
 Suggests:
-    dbscan
+    dbscan,
+    ggplot2,
+    ggthemes
 Maintainer: Julian Spagnuolo <julian.spagnuolo@unibas.ch>
-Description: t-Stochastic Neighborhood Embedding (t-SNE) is a highly successful method for dimensionality reduction and visualization of high dimensional datasets. A popular implementation of t-SNE uses the Barnes-Hut algorithm to approximate the gradient at each iteration of gradient descent. We modified this implementation as follows:
-    Computation of the N-body Simulation: Instead of approximating the N-body simulation using Barnes-Hut, we interpolate onto an equispaced grid and use FFT to perform the convolution, dramatically reducing the time to compute the gradient at each iteration of gradient descent. See the this post for some intuition on how it works.
-    Computation of Input Similiarities: Instead of computing nearest neighbors using vantage-point trees, we approximate nearest neighbors using the Annoy library. The neighbor lookups are multithreaded to take advantage of machines with multiple cores. Using "near" neighbors as opposed to strictly "nearest" neighbors is faster, but also has a smoothing effect, which can be useful for embedding some datasets (see Linderman et al. (2017)). If subtle detail is required (e.g. in identifying small clusters), then use vantage-point trees (which is also multithreaded in this implementation).
-    Early exaggeration: In Linderman and Steinerberger (2017), we showed that appropriately choosing the early exaggeration coefficient can lead to improved embedding of swissrolls and other synthetic datasets.
-    Late exaggeration: Increasing the exaggeration coefficient late in the optimization process (e.g. after 800 of 1000 iterations) can improve separation of the clusters.
-License: 
+BugReports: https://github.com/JulianSpagnuolo/FIt-SNE/issues
+License: BSD_3_clause + file LICENSE
 OS_type: unix
 SystemRequirements: C++11
 NeedsCompilation: yes

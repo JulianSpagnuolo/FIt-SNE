@@ -12,7 +12,7 @@ Check out the [preprint](https://arxiv.org/abs/1712.09005) for more details and 
 
 ## Installation
 Note that the code has been tested for OS X and Linux, but not for Windows.
-The only prerequisite is [FFTW](http://www.fftw.org/), which can be downloaded and installed from the website. 
+The only prerequisite is [FFTW](http://www.fftw.org/), which can be downloaded and installed from the website, prior to installation of this R pacakge.
 This fork will install an R package ONLY.... for matlab and python implementations please see the original repo.
 ```r
     devtools::install_github("JulianSpagnuolo/FIt-SNE")

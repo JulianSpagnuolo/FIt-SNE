@@ -20,9 +20,20 @@ and they can be mapped to a corresponding location on the 2D t-SNE}
 
 \item{enrich}{For every gene in goi, find enrich number of genes that are close to that gene in the distance induced by the 1D t-SNE}
 
-\item{breaks}{Number of bins
-import gplots might not be required}
+\item{breaks}{Number of bins}
+}
+\value{
+plotly object.
 }
 \description{
 Computes t-SNE Heatmap (EXPERIMENTAL)
+}
+\examples{
+
+# Get a 1-dimensional embedding
+ff <- fftRtsne(X=u.iris[,1:4], dims=1, fft_not_bh=T, max_iter=1000, rand_seed=42)
+
+# Transposition of the expression matrix is NOT necessary if you are working with single cell RNA seq data.... i.e. your cells are in the columns not rows.
+tsnehm(expression_matrix = t(u.iris[,1:4]), goi=colnames(u.iris[,1:4]), tsne_embedding = ff, cell_labels = u.iris$Species)
+
 }

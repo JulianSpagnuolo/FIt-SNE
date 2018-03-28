@@ -14,25 +14,68 @@ fftRtsne <- function(X,
 {
   #' @export
   #' @title ffRtsne
+  #' @author George Linderman, Cristoph H, Julian Spagnuolo
   #' @param X numeric matrix or dataframe containing data to be tsne-fied
   #' @param dims integer. number of output dimensions to reduce to. Default is 2.
   #' @param perplexity integer. Default is 30.
-  #' @param theta numeric. Default is 0.5
+  #' @param theta numeric. Set to 0 for exact.  If non-zero, then will use either Barnes Hut or FIt-SNE based on fft_not_bh. If Barnes Hut is used, then this determines the accuracy of BH approximation. Default is 0.5
   #' @param max_iter integer. Maximum iterations to run tsne over the data.
   #' @param fft_not_bh logical. Whether to run the Fast Fourier Transform tSNE (TRUE), or if set to FALSE, will use the BH implementation (slower). Default is TRUE.
-  #' @param ann_not_vptree logical. Default is TRUE.
-  #' @param stop_lying_iter integer. Default is 250.
-  #' @param exaggeration_factor numeric. Default is 12.0
-  #' @param no_momentum_during_exag logical. Default is FALSE.
-  #' @param start_late_exag_iter numeric. Default is -1.0
-  #' @param late_exag_coeff numeric. Default is 1.0
+  #' @param ann_not_vptree logical. If TRUE will approximate nearest neighbors using [Annoy](https://github.com/spotify/annoy), if FALSE the original BH-tSNE method using vantage-point trees will be used. Default is TRUE.
+  #' @param stop_lying_iter integer. Determines the iteration at which early exageration is switch off. Default is 250.
+  #' @param exaggeration_factor numeric. Early exageration coefficient, altering can lead to improved embedding of swissrolls and other synthetic datasets. Default is 12.0
+  #' @param no_momentum_during_exag logical. If FALSE, momentum and other optimizations will be used in the gradient decent phase. If TRUE, standard gradient descent will be used. Useful for testing large exaggeration coefficients. Default is FALSE.
+  #' @param start_late_exag_iter numeric. Iteration at which to start late exageration, if set to -1, late exageration will not be used. Default is -1.0
+  #' @param late_exag_coeff numeric. Increasing this parameter may improve separation of the clusters in the reduced space. Default is 1.0
   #' @param n_trees integer. Default is 50
-  #' @param intervals_per_integer integer. Default is 1
-  #' @param min_num_intervals integer. Default is 50
-  #' @param data_path character. Default is NULL
-  #' @param result_path character. Default is NULL
+  #' @param search_k numeric. Default is -1.
+  #' @param rand_seed numeric. Set a seed number for reproducibility, if -1 the random seed will be set using the system time. Default is -1.
+  #' @param intervals_per_integer integer. See Details, must be >0. Default is 1
+  #' @param min_num_intervals integer. See Details. Default is 50
+  #' @param data_path character. File path of a data file. If NULL, X will be written to a temp file. Default is NULL
+  #' @param result_path character. File path to write results to, if NULL results will be written to a temp file prior to being read into R. Default is NULL
   #' @param fast_tsne_path character. File path to the location of the compiled fast_tsne_binary. This version of the forked git repo will compile the fast_tsne binary to the package installation directory, if this param is NULL then the function will default to this location. You can change this behaviour if you have a custom install of the original repo. Default is NULL
-  #' @param nthreads integer. Number of threads to use in the FF-tSNE, if NULL, will use detectCores()-1 to determine the number of threads to use.
+  #' @param nthreads integer. Number of threads used by computeGaussianPerplexity, if NULL, will use detectCores()-1 to determine the number of threads to use.
+  #' @details 
+  #' ann_not_vptree
+  #'  Using "near" neighbors as opposed to strictly "nearest" neighbors is faster, but also has a smoothing effect,
+  #'  which can be useful for embedding some datasets (see Linderman et al. (2017)).
+  #'  If subtle detail is required (e.g. in identifying small clusters), then use vantage-point trees
+  #'  (which is also multithreaded in this implementation).
+  #' 
+  #' min_num_intervals & intervals_per_integer
+  #' 
+  #' Let:
+  #'    maxloc = ceiling(max(max(X)))
+  #'    and
+  #'    minloc = floor(min(min(X)))
+  #'    i.e. the data points are in a minloc^n.dims by maxloc^n.dims interval/square. The number os intervals in each dimension
+  #'    is either min_num_intervals or ceiling(maxloc - minloc)/intervals_per_integer whichever is larger.
+  #'    
+  #' @return Matrix of the reduced tSNE dimensions, ncol = dims, nrow = nrow(X).
+  #' @references George C. Linderman, Manas Rachh, Jeremy G. Hoskins, Stefan Steinerberger, Yuval Kluger. (2017). Efficient Algorithms for t-distributed Stochastic Neighborhood Embedding. (2017) arXiv:1712.09005
+  #' 
+  #' @examples 
+  #' # import the iris data set and remove any duplicates 
+  #' data(iris)
+  #' 
+  #' u.iris <- unique(iris)
+  #' 
+  #' # For a standard BH-tsne
+  #' 
+  #' bh <- fftRtsne(X=u.iris[,1:4], dims = 2, fft_not_bh = F, max_iter = 1000, rand_seed=42)
+  #' u.iris$bh.tsne1 <- bh[,1]
+  #' u.iris$bh.tsne2 <- bh[,2]
+  #' 
+  #' ggplot(u.iris, aes(x=bh.tsne1, y=bh.tsne2, colour=Species)) +geom_point() +scale_color_colorblind() +theme_bw() +theme(aspect.ratio=1)
+  #' 
+  #' # For the fast Fourier transform tSNE
+  #' 
+  #' ff <- fftRtsne(X=u.iris[,1:4], dims=2, fft_not_bh=T, max_iter=1000, rand_seed=42)
+  #' u.iris$ff.tsne1 <- ff[,1]
+  #' u.iris$ff.tsne2 <- ff[,2]
+  #' 
+  #' ggplot(u.iris, aes(x=ff.tsne1, y=ff.tsne2, colour=Species)) +geom_point() +scale_color_colorblind() +theme_bw() +theme(aspect.ratio=1)
   #' 
   #' @importFrom parallel detectCores
 	
