@@ -17,7 +17,7 @@ This fork will install an R package ONLY.... for matlab and python implementatio
 ```r
     devtools::install_github("JulianSpagnuolo/FIt-SNE")
 ```
-And you're good to go! Check out `examples/` for usage.
+Check the examples given in the function documentation for usage demonstrations.
 
 
 
