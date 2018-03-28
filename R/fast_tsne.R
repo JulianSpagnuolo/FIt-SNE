@@ -42,9 +42,9 @@ fftRtsne <- function(X,
 	if (is.null(result_path)) {
 		result_path <- tempfile(pattern='fftRtsne_result_', fileext='.dat')
 	}
-	if (is.null(fast_tsne_path)) {
-		fast_tsne_path <- system2('which', 'fast_tsne', stdout=TRUE)
-	}
+	#if (is.null(fast_tsne_path)) { ## No longer necessary with default install location using makefile. JS
+	#	fast_tsne_path <- system2('which', 'fast_tsne', stdout=TRUE)
+	#}
   if(is.null(fast_tsne_path)) ### Added in to default to R package install location. JS.
   {
     fast_tsne_path <- paste(normalizePath(find.package("fftRtsne")), "fast_tsne", sep="/")
