@@ -1,9 +1,9 @@
 Package: fftRtsne
 Type: Package
 Title: FFT-Accelerated Interpolation-Based tSNE (FIt-SNE)
-Version: 0.1.0
+Version: 1.0.0
 Date: 2018-03-27
-Description: An R wrapper around a fast Fourier transform-accelerated interpolation-based t-SNE (FIt-SNE), which dramatically accelerates the computation of t-SNE. The most time-consuming step of t-SNE is a convolution that is here, accelerated by interpolating onto an equispaced grid and subsequently using the fast Fourier transform to perform the convolution. The computation of input similarities in high dimensions is also optimised using multi-threaded approximate nearest neighbors. A further modification to t-SNE called "late exaggeration", allows for easier identification of clusters in t-SNE embeddings. See Linderman GC., Rachh M., et al (2017) <arXiv:1712.09005>
+Description: An R wrapper around a fast Fourier transform-accelerated interpolation-based t-SNE (FIt-SNE), which dramatically accelerates the computation of t-SNE. The most time-consuming step of t-SNE is a convolution that is here, accelerated by interpolating onto an equispaced grid and subsequently using the fast Fourier transform to perform the convolution. The computation of input similarities in high dimensions is also optimised using multi-threaded approximate nearest neighbors. A further modification to t-SNE called "late exaggeration", allows for easier identification of clusters in t-SNE embeddings. See Linderman GC., Rachh M., et al (2017) <arXiv:1712.09005>.
 Authors@R: c(person("George C.","Linderman", role = c("aut"), comment="Author of original FI-tsne code"),
             person("Manas","Rachh",role = c("aut"), comment="Author of original FI-tsne code"),
             person("Jeremy G.","Hoskins", role = c("aut"), comment="Author of original FI-tsne code"),
