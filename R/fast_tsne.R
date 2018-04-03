@@ -59,6 +59,7 @@ fftRtsne <- function(X,
   #' @references George C. Linderman, Manas Rachh, Jeremy G. Hoskins, Stefan Steinerberger, Yuval Kluger. (2017). Efficient Algorithms for t-distributed Stochastic Neighborhood Embedding. (2017) arXiv:1712.09005
   #' 
   #' @examples 
+  #' \dontrun{
   #' # import the iris data set and remove any duplicates 
   #' library(ggplot2)
   #' library(ggthemes)
@@ -83,7 +84,9 @@ fftRtsne <- function(X,
   #' 
   #' fig <- ggplot(u.iris, aes(x=ff.tsne1, y=ff.tsne2, colour=Species))
   #' fig +geom_point() +scale_color_colorblind() +theme_bw() +theme(aspect.ratio=1)
+  #' }
   #' 
+  #' @importFrom utils file_test
   #' @importFrom parallel detectCores
 	
   if (is.null(data_path)) {

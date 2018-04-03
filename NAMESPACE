@@ -2,3 +2,4 @@
 
 export(fftRtsne)
 importFrom(parallel,detectCores)
+importFrom(utils,file_test)

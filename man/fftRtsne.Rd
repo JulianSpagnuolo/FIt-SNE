@@ -83,6 +83,7 @@ Let:
    is either min_num_intervals or ceiling(maxloc - minloc)/intervals_per_integer whichever is larger.
 }
 \examples{
+\dontrun{
 # import the iris data set and remove any duplicates 
 library(ggplot2)
 library(ggthemes)
@@ -107,6 +108,7 @@ u.iris$ff.tsne2 <- ff[,2]
 
 fig <- ggplot(u.iris, aes(x=ff.tsne1, y=ff.tsne2, colour=Species))
 fig +geom_point() +scale_color_colorblind() +theme_bw() +theme(aspect.ratio=1)
+}
 
 }
 \references{

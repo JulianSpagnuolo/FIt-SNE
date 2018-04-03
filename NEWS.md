@@ -1,3 +1,9 @@
+# fftRtsne 1.0.1
+
+* Added #include <functional> to tsne.cpp
+* altered documentation of fftRtsne function
+* Updated NAMESPACE
+
 # fftRtsne 1.0.0
 
 * Updated version number for release.
