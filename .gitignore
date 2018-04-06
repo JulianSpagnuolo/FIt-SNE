@@ -1,3 +1,6 @@
+*.Rproj
+.gitignore
+
 bin/*
 temp/*
 *.m~
