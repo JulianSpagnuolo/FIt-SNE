@@ -21,7 +21,6 @@ Suggests:
 Maintainer: Julian Spagnuolo <julian.spagnuolo@unibas.ch>
 BugReports: https://github.com/JulianSpagnuolo/FIt-SNE/issues
 License: BSD_3_clause + file LICENSE
-OS_type: unix
 SystemRequirements: C++11, [FFTW](http://www.fftw.org/) 
 NeedsCompilation: yes
 RoxygenNote: 6.0.1
